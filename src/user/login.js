@@ -1,6 +1,7 @@
 // const { comparePassword, generateToken } = require("../middleware/auth");
 import errorHandler from "../../utils/error.js";
 import con from "../../db.js";
+import { isNil } from "../../utils/validations.js";
 import { comparePassword, generateToken } from "../../middleware/auth.js";
 
 const login = async (req, res) => {
@@ -10,9 +11,12 @@ const login = async (req, res) => {
     const result = await con.query("SELECT * FROM users WHERE email = $1", [
       email,
     ]);
+    console.log(result, "ww");
+
     const user = result.rows[0];
+
     if (isNil(user)) {
-      throw errorHandler(404, "Customer not found!");
+      throw errorHandler(404, "User not found!");
     }
 
     const isValid = await comparePassword(password, user.password);
@@ -23,24 +27,23 @@ const login = async (req, res) => {
     if (!isValid)
       return res.status(401).json({ error: "Имэйл эсвэл нууц үг буруу" });
     const tokenData = {
-      id: customer._id.toString(),
-      sub: customer.name,
-      iss: "Ara-web",
-      aud: "Ara-customer",
+      id: user.id.toString(),
+      sub: user.name,
+      iss: "blog_system",
+      aud: "blog_user",
       data: {
-        id: customer._id,
-        name: customer.name ?? "Customer",
-        phone: customer.phone ?? "-",
-        avatar: customer.avatar,
-        email: customer.email,
+        id: user.id,
+        name: user.name ?? "User",
+        email: user.email,
+        role: user.role,
       },
     };
 
     return res.status(200).json({
       success: true,
       data: {
+        user: user,
         token: generateToken(tokenData),
-        changePasswordRequired: customer.changePasswordRequired || false,
       },
     });
   } catch (err) {

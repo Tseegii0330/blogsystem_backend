@@ -46,24 +46,3 @@ export const verifyApiToken = (req, res, next) => {
   }
   return next();
 };
-
-export const verifyOperatorToken = (req, res, next) => {
-  const token =
-    req.headers.authorization ||
-    req.query.token ||
-    req.headers["x-access-token"];
-
-  console.log(token, "token");
-
-  if (isNil(token)) {
-    return res.status(401).json({ success: false, message: "Unauthorized" });
-  }
-  try {
-    const decoded = jwt.verify(token, config.TOKEN_KEY);
-
-    req.authorizer = decoded.data;
-  } catch (err) {
-    return res.status(401).json({ success: false, message: "Unauthorized" });
-  }
-  return next();
-};

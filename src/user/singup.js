@@ -26,9 +26,11 @@ const register = async (req, res) => {
       [email]
     );
 
-    if (!isNil(existingUser)) {
-      throw errorHandler(400, "Email already registred!");
-    }
+    console.log(existingUser);
+
+    // if (!isNil(existingUser)) {
+    //   throw errorHandler(400, "Email already registred!");
+    // }
     const hashedPassword = await hashPassword(password, 10);
     const newUser = await con.query(
       "INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
