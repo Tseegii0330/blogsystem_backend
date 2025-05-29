@@ -7,6 +7,8 @@ import { comparePassword, generateToken } from "../../middleware/auth.js";
 const login = async (req, res) => {
   const { email, password } = req.body;
 
+  let count = 0;
+
   try {
     const result = await con.query("SELECT * FROM users WHERE email = $1", [
       email,
@@ -21,6 +23,7 @@ const login = async (req, res) => {
 
     const isValid = await comparePassword(password, user.password);
     if (!isValid) {
+      count++;
       throw errorHandler(401, "Invalid password");
     }
 

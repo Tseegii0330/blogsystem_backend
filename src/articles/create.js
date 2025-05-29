@@ -12,7 +12,7 @@ const createArticle = async (req, res) => {
       });
     }
 
-    const { title, content, tags } = req.body;
+    const { title, content, tags, isPublished } = req.body;
     if (isNil(title) || isNil(content)) {
       return res.status(400).json({
         success: false,
@@ -21,8 +21,8 @@ const createArticle = async (req, res) => {
     }
 
     const result = await con.query(
-      "INSERT INTO articles (title, content, tags, author_id, created_at) VALUES ($1, $2, $3, $4, NOW()) RETURNING *",
-      [title, content, tags || [], user.id]
+      "INSERT INTO articles (title, content, tags, author_id, created_at, isPublished) VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *",
+      [title, content, tags || [], user.id, isPublished]
     );
 
     res.status(201).json({

@@ -3,12 +3,12 @@ const router = express.Router();
 import apiLoginFunction from "../src/user/login.js";
 import apiSignupFunction from "../src/user/singup.js";
 import { verifyApiToken } from "../middleware/auth.js";
-import createArticle from "../src/articles/createArticle.js";
-import userList from "../src/user/users.js";
-import { searchArticles, articlesList } from "../src/articles/articles.js";
-import createComment from "../src/comments/createComment.js";
-
-// const migration = require('../src/operator/migration')
+import createArticle from "../src/articles/create.js";
+import userList from "../src/user/list.js";
+import { getArticles, articlesList } from "../src/articles/list.js";
+import createComment from "../src/comments/create.js";
+import updateArticle from "../src/articles/update.js";
+import likes from "../src/likes/list.js";
 
 /************************************************************
  *                                                          *
@@ -25,8 +25,10 @@ router.get("/user/list", userList);
 
 // Article services
 router.post("/articles", verifyApiToken, createArticle);
-router.get("/articles", searchArticles);
+router.get("/articles", getArticles);
 router.post("/articles/:id/comments", verifyApiToken, createComment);
+router.put("/articles/:id", verifyApiToken, updateArticle);
+router.get("/likes", likes);
 // Me services
 
 /************************************************************
