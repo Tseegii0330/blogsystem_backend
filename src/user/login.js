@@ -1,6 +1,6 @@
 // const { comparePassword, generateToken } = require("../middleware/auth");
 import errorHandler from "../../utils/error.js";
-import con from "../../db.js";
+import db from "../../db.js";
 import { isNil } from "../../utils/validations.js";
 import { comparePassword, generateToken } from "../../middleware/auth.js";
 
@@ -10,7 +10,7 @@ const login = async (req, res) => {
   let count = 0;
 
   try {
-    const result = await con.query("SELECT * FROM users WHERE email = $1", [
+    const result = await db.query("SELECT * FROM users WHERE email = $1", [
       email,
     ]);
     console.log(result, "ww");

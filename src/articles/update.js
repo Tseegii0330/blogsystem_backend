@@ -1,4 +1,4 @@
-import con from "../../db.js";
+import db from "../../db.js";
 
 const updateArticle = async (req, res) => {
   try {
@@ -8,7 +8,7 @@ const updateArticle = async (req, res) => {
     let setVals = [];
     let params = [];
 
-    const article = con.query(`SELECT * FROM articles WHERE id = ${id}`);
+    const article = db.query(`SELECT * FROM articles WHERE id = ${id}`);
 
     console.log("article: ", article.rows[0]);
 
@@ -35,7 +35,7 @@ const updateArticle = async (req, res) => {
 
     params.push(id);
     const sql = `UPDATE articles SET ${setVals.join(", ")} WHERE id = ?`;
-    const [result] = await con.query(sql, params);
+    const [result] = await db.query(sql, params);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({ error: "Article not found." });

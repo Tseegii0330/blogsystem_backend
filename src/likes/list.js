@@ -1,9 +1,9 @@
-import con from "../../db.js";
+import db from "../../db.js";
 import errorHandler from "../../utils/error.js";
 import { isNil } from "../../utils/validations.js";
 
 const list = async (req, res) => {
-  const likes = con.query("SELECT * FROM likes");
+  const likes = db.query("SELECT * FROM likes");
 
   if (isNil(likes)) {
     throw errorHandler(400, "Don`t hava any like");

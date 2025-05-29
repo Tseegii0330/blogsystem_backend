@@ -1,4 +1,4 @@
-import con from "../../db.js";
+import db from "../../db.js";
 import errorHandler from "../../utils/error.js";
 import { isNil } from "../../utils/validations.js";
 
@@ -12,14 +12,14 @@ const createComment = async (req, res) => {
   if (isNil(user)) {
     throw errorHandler(400, "Can not comment in this article");
   }
-  const article = await con.query("SELECT * FROM articles WHERE id = $1", [
+  const article = await db.query("SELECT * FROM articles WHERE id = $1", [
     article_id,
   ]);
   if (isNil(article)) {
     throw errorHandler(400, "Article not found");
   }
 
-  const newComment = await con.query(
+  const newComment = await db.query(
     "INSERT INTO comments (article_id, user_id, content) VALUES ($1, $2, $3) RETURNING *",
     [article_id, user.id, content]
   );

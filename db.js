@@ -3,7 +3,7 @@ import dotenv from "dotenv";
 dotenv.config();
 
 // Pool connection setup
-const con = new Pool({
+const db = new Pool({
   user: process.env.DB_USER,
   host: process.env.DB_HOST,
   database: process.env.DB_NAME,
@@ -12,8 +12,7 @@ const con = new Pool({
 });
 
 // Test connection
-con
-  .connect()
+db.connect()
   .then((client) => {
     if (client) console.log("✅ Database холболт амжилттай!");
 
@@ -24,4 +23,4 @@ con
     process.exit(1);
   });
 
-export default con;
+export default db;
