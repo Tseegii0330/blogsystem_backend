@@ -8,7 +8,7 @@ const updateArticle = async (req, res) => {
     const id = req.params.id;
     let setVals = [];
 
-    if (!user || (user.role !== "admin" && user.role !== "editor")) {
+    if (!user || user.role !== "admin" || user.role !== "editor") {
       return res.status(403).json({
         success: false,
         message: "Permission denied. Only admin or editor can create articles.",

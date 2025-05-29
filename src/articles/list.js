@@ -45,14 +45,9 @@ export async function getArticles(req, res) {
       ${whereClause}
     `;
 
-    const dataValues = [...values, limit, offset];
-
     console.log("dataQuery: ", dataQuery);
 
     const result = await db.query(dataQuery);
-
-    // const totalCount = parseInt(countResult.rows[0].count, 10);
-    // const totalPages = Math.ceil(totalCount / limit);
 
     res.json({
       success: true,

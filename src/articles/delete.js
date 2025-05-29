@@ -9,7 +9,7 @@ const deleteArticle = async (req, res) => {
     if (!id) {
       throw errorHandler(400, "not found article");
     }
-    if (!user || (user.role !== "admin" && user.role !== "editor")) {
+    if (!user || user.role !== "admin" || user.role !== "editor") {
       return res.status(403).json({
         success: false,
         message: "Permission denied. Only admin or editor can create articles.",

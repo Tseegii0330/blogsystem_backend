@@ -8,10 +8,11 @@ import userList from "../src/user/list.js";
 import { getArticles, articlesList } from "../src/articles/list.js";
 import createComment from "../src/comments/create.js";
 import updateArticle from "../src/articles/update.js";
-import likes from "../src/likes/list.js";
+import likeCounts from "../src/likes/likeCounts.js";
 import commentsByArticleId from "../src/comments/list.js";
 import deleteArticle from "../src/articles/delete.js";
 import findById from "../src/articles/findById.js";
+import createAndDeleteLike from "../src/likes/create.js";
 
 /************************************************************
  *                                                          *
@@ -34,7 +35,8 @@ router.put("/articles/:id", verifyApiToken, updateArticle);
 router.delete("/articles/:id", verifyApiToken, deleteArticle);
 router.post("/articles/:id/comments", verifyApiToken, createComment);
 router.get("/articles/:id/comments", commentsByArticleId);
-router.get("/likes", likes);
+router.get("/articles/:id/likes", likeCounts);
+router.post("/articles/:id/likes", verifyApiToken, createAndDeleteLike);
 // Me services
 
 /************************************************************

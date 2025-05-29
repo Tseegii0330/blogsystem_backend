@@ -1,5 +1,4 @@
 import db from "../../db.js";
-import { isNil } from "../../utils/validations.js";
 
 const findById = async (req, res) => {
   try {
