@@ -12,9 +12,9 @@ const createComment = async (req, res) => {
   if (isNil(user)) {
     throw errorHandler(400, "Can not comment in this article");
   }
-  const article = await db.query("SELECT * FROM articles WHERE id = $1", [
-    article_id,
-  ]);
+  const article = await db.query(
+    `SELECT * FROM articles WHERE id = ${article_id}`
+  );
   if (isNil(article)) {
     throw errorHandler(400, "Article not found");
   }

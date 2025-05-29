@@ -9,6 +9,7 @@ import { getArticles, articlesList } from "../src/articles/list.js";
 import createComment from "../src/comments/create.js";
 import updateArticle from "../src/articles/update.js";
 import likes from "../src/likes/list.js";
+import commentsByArticleId from "../src/comments/list.js";
 
 /************************************************************
  *                                                          *
@@ -27,6 +28,7 @@ router.get("/user/list", userList);
 router.post("/articles", verifyApiToken, createArticle);
 router.get("/articles", getArticles);
 router.post("/articles/:id/comments", verifyApiToken, createComment);
+router.get("/articles/:id/comments", commentsByArticleId);
 router.put("/articles/:id", verifyApiToken, updateArticle);
 router.get("/likes", likes);
 // Me services

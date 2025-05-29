@@ -4,8 +4,6 @@ import errorHandler from "../../utils/error.js";
 
 const PAGE_SIZE = 10;
 
-// /articles?tag=tech&author=bat&page=2
-
 export async function getArticles(req, res) {
   try {
     const { tags, author_id, page = 1 } = req.query;

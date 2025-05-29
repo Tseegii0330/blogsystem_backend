@@ -1,45 +1,53 @@
 import db from "../../db.js";
+import errorHandler from "../../utils/error.js";
 
 const updateArticle = async (req, res) => {
   try {
-    const { content, title, tag, isPublished } = req.body;
-    // const user = req.authorizer;
+    const { content, title, tags, is_published } = req.body;
+    const user = req.authorizer;
     const id = req.params.id;
     let setVals = [];
-    let params = [];
 
-    const article = db.query(`SELECT * FROM articles WHERE id = ${id}`);
+    if (!user || (user.role !== "admin" && user.role !== "editor")) {
+      return res.status(403).json({
+        success: false,
+        message: "Permission denied. Only admin or editor can create articles.",
+      });
+    }
+    const article = await db.query(`SELECT * FROM articles WHERE id = ${id}`);
+    const pushedTagLength =
+      article.rows[0].tags.length == 0
+        ? article.rows[0].tags.length
+        : article.rows[0].tags.length + 1;
 
-    console.log("article: ", article.rows[0]);
+    console.log(pushedTagLength);
 
-    if (content !== undefined) {
-      setVals.push("content = ?");
-      params.push(content);
+    if (!article) {
+      throw errorHandler(404, "not found artilce");
     }
-    if (title !== undefined) {
-      setVals.push("title = ?");
-      params.push(title);
+
+    if (content) {
+      setVals.push(`content = '${content}'`);
     }
-    if (tag !== undefined) {
-      setVals.push("tag = ?");
-      params.push(tag);
+    if (title) {
+      setVals.push(`title = '${title}'`);
     }
-    if (isPublished !== undefined) {
-      setVals.push("isPublished = ?");
-      params.push(isPublished);
+    if (tags) {
+      setVals.push(`tags[${pushedTagLength}] = '${tags}'`);
+    }
+    if (is_published) {
+      setVals.push(`is_published = ${is_published}`);
     }
 
     if (setVals.length === 0) {
       return res.status(400).json({ error: "No fields to update." });
     }
 
-    params.push(id);
-    const sql = `UPDATE articles SET ${setVals.join(", ")} WHERE id = ?`;
-    const [result] = await db.query(sql, params);
+    console.log("setVals: ", setVals.join(", "));
 
-    if (result.affectedRows === 0) {
-      return res.status(404).json({ error: "Article not found." });
-    }
+    const sql = `UPDATE articles SET ${setVals.join(", ")} WHERE id = ${id}`;
+
+    const result = await db.query(sql);
 
     res.status(200).json({
       success: true,
