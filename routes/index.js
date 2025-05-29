@@ -13,7 +13,8 @@ import commentsByArticleId from "../src/comments/list.js";
 import deleteArticle from "../src/articles/delete.js";
 import findById from "../src/articles/findById.js";
 import createAndDeleteLike from "../src/likes/create.js";
-
+import updateComment from "../src/comments/update.js";
+import deleteComment from "../src/comments/delete.js";
 /************************************************************
  *                                                          *
  *                     API service routes                   *
@@ -35,8 +36,19 @@ router.put("/articles/:id", verifyApiToken, updateArticle);
 router.delete("/articles/:id", verifyApiToken, deleteArticle);
 router.post("/articles/:id/comments", verifyApiToken, createComment);
 router.get("/articles/:id/comments", commentsByArticleId);
+router.put(
+  "/articles/:articleId/comments/:commentId",
+  verifyApiToken,
+  updateComment
+);
+router.delete(
+  "/articles/:articleId/comments/:commentId",
+  verifyApiToken,
+  deleteComment
+);
 router.get("/articles/:id/likes", likeCounts);
 router.post("/articles/:id/likes", verifyApiToken, createAndDeleteLike);
+
 // Me services
 
 /************************************************************

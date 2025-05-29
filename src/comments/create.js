@@ -7,14 +7,17 @@ const createComment = async (req, res) => {
   const article_id = req.params.id;
   const user = req.authorizer;
 
-  console.log(article_id);
-
   if (isNil(user)) {
-    throw errorHandler(400, "Can not comment in this article");
+    return res.status(400).json({
+      success: false,
+      message: "Please login",
+    });
   }
+
   const article = await db.query(
     `SELECT * FROM articles WHERE id = ${article_id}`
   );
+
   if (isNil(article)) {
     throw errorHandler(400, "Article not found");
   }
@@ -23,8 +26,6 @@ const createComment = async (req, res) => {
     "INSERT INTO comments (article_id, user_id, content) VALUES ($1, $2, $3) RETURNING *",
     [article_id, user.id, content]
   );
-
-  console.log(newComment);
 
   return res.status(200).json({
     success: true,
