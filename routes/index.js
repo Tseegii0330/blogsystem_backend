@@ -11,6 +11,7 @@ import updateArticle from "../src/articles/update.js";
 import likes from "../src/likes/list.js";
 import commentsByArticleId from "../src/comments/list.js";
 import deleteArticle from "../src/articles/delete.js";
+import findById from "../src/articles/findById.js";
 
 /************************************************************
  *                                                          *
@@ -27,9 +28,10 @@ router.get("/user/list", userList);
 
 // Article services
 router.post("/articles", verifyApiToken, createArticle);
-router.get("/articles", getArticles);
-router.delete("/articles/:id", verifyApiToken, deleteArticle);
+router.post("/articles", getArticles);
+router.get("/articles/:id", findById);
 router.put("/articles/:id", verifyApiToken, updateArticle);
+router.delete("/articles/:id", verifyApiToken, deleteArticle);
 router.post("/articles/:id/comments", verifyApiToken, createComment);
 router.get("/articles/:id/comments", commentsByArticleId);
 router.get("/likes", likes);
