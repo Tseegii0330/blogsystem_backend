@@ -1,11 +1,11 @@
 # blogsystem_backend
 
-A Node.js backend for a blog system using Express, PostgreSQL, and ES modules.
+Энэхүү систем нь Node.js, Express, PostgreSQL, and ES modules ашиглан хийсэн жижиг влог систем юм.
 
 ## Features
 
-- User registration and login
-- User listing
+- Хэрэглэгч нэвтрэх, бүртгүүлэх болон нууц үг сэргээх
+- Хэрэглэгчийн мэдээллүүд
 - JWT authentication
 - Input validation
 - PostgreSQL database
@@ -20,7 +20,7 @@ A Node.js backend for a blog system using Express, PostgreSQL, and ES modules.
 1. **Clone the repository:**
 
    ```bash
-   git clone <your-repo-url>
+   git clone https://github.com/Tseegii0330/blogsystem_backend.git
    cd blogsystem_backend
    ```
 
@@ -44,26 +44,26 @@ A Node.js backend for a blog system using Express, PostgreSQL, and ES modules.
 
 4. **Start the server:**
    ```bash
-   npm run dev
+   npm run dev -- хөгжүүлэлтийн орчинд nodemon ашиглан асаана
    # or
    npm start
    ```
-   The server will run on [http://localhost:3001](http://localhost:3001) by default.
+   local орчинд асаавал [http://localhost:3001](http://localhost:3001) тус утгатай асна. .
 
 ## API Endpoints
 
-All endpoints are prefixed with `/api`.
+Бүх endpoint-ууд урдаа `/api` гэсэн бичиглэл авана.
 
 ### Register a User
 
 - **POST** `/api/signup`
 - **Body:**
   ```json
+  Хэрэглэгч шинээр бүртгүүлэхэд хэрэглэгчийн role нь default утга нь reader байна.
   {
     "name": "Your Name",
     "email": "your@email.com",
     "password": "yourpassword",
-    "role": "reader"
   }
   ```
 

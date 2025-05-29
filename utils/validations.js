@@ -4,11 +4,6 @@ export function validateEmail(email) {
   return re.test(email);
 }
 
-export function validateObjectId(value) {
-  const re = /^[0-9a-fA-F]{24}$/;
-  return re.test(value);
-}
-
 export function validateString(value, maxLength = 0, minLength = 0) {
   if (typeof value !== "string" && !(value instanceof String)) {
     return false;
@@ -22,23 +17,10 @@ export function validateString(value, maxLength = 0, minLength = 0) {
   return true;
 }
 
-export function validateNumber(value) {
-  if (typeof value === "number" && isFinite(value)) {
-    return true;
-  } else {
-    return false;
-  }
-}
-
 export function isNil(value) {
   if (value === null || value === undefined) {
     return true;
   } else {
     return false;
   }
-}
-
-export function validateDate(value) {
-  const date = new Date(value);
-  return !isNaN(date.getTime());
 }
