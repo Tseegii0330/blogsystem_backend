@@ -10,6 +10,7 @@ import createComment from "../src/comments/create.js";
 import updateArticle from "../src/articles/update.js";
 import likes from "../src/likes/list.js";
 import commentsByArticleId from "../src/comments/list.js";
+import deleteArticle from "../src/articles/delete.js";
 
 /************************************************************
  *                                                          *
@@ -27,9 +28,10 @@ router.get("/user/list", userList);
 // Article services
 router.post("/articles", verifyApiToken, createArticle);
 router.get("/articles", getArticles);
+router.delete("/articles/:id", verifyApiToken, deleteArticle);
+router.put("/articles/:id", verifyApiToken, updateArticle);
 router.post("/articles/:id/comments", verifyApiToken, createComment);
 router.get("/articles/:id/comments", commentsByArticleId);
-router.put("/articles/:id", verifyApiToken, updateArticle);
 router.get("/likes", likes);
 // Me services
 

@@ -20,10 +20,8 @@ const updateArticle = async (req, res) => {
         ? article.rows[0].tags.length
         : article.rows[0].tags.length + 1;
 
-    console.log(pushedTagLength);
-
     if (!article) {
-      throw errorHandler(404, "not found artilce");
+      return res.status(400).json({ error: "Not fount article." });
     }
 
     if (content) {
@@ -47,11 +45,12 @@ const updateArticle = async (req, res) => {
 
     const sql = `UPDATE articles SET ${setVals.join(", ")} WHERE id = ${id}`;
 
-    const result = await db.query(sql);
+    await db.query(sql);
 
-    res.status(200).json({
+    return res.status(200).json({
       success: true,
       message: "Article updated successfully.",
+      result: "",
     });
   } catch (error) {
     res.status(500).json({ error: error.message });
