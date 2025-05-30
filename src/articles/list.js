@@ -2,30 +2,36 @@ import db from "../../db.js";
 import { isNil } from "../../utils/validations.js";
 import errorHandler from "../../utils/error.js";
 
-const PAGE_SIZE = 10;
+const PAGE_SIZE = 3;
 
 export async function getArticles(req, res) {
   try {
-    const { tags, author_id, page = 1 } = req.query;
-    const limit = 10;
+    const { tags, author, page = 1 } = req.query;
+    const limit = 3;
     const offset = (parseInt(page) - 1) * limit;
 
     let whereConditions = [];
-    let values = [];
 
     if (tags) {
       whereConditions.push(`'${tags}' = ANY (tags)`);
     }
 
-    if (author_id) {
-      // values.push(author);
-      // whereConditions.push(`author = $${values.length}`);
-
-      const auhtors = await db.query(
-        `SELECT * FROM articles WHERE author_id = ${author_id}`
+    if (author) {
+      const authorByname = await db.query(
+        `SELECT id FROM users WHERE name = '${author}'`
       );
-      whereConditions.push(`author_id = ${author_id}`);
-      console.log("auhtors:", auhtors);
+
+      if (authorByname.rows.length == 0) {
+        return res.status(401).json({
+          success: false,
+          message: "Тус нэртэй нийтлэлч олдсонгүй.",
+        });
+      } else {
+        const author_id = authorByname.rows[0].id;
+        if (author_id) {
+          whereConditions.push(`author_id = ${author_id}`);
+        }
+      }
     }
 
     const whereClause =
@@ -38,6 +44,7 @@ export async function getArticles(req, res) {
       SELECT * FROM articles
       ${whereClause}
       ORDER BY created_at DESC
+      LIMIT ${PAGE_SIZE} OFFSET ${offset} 
     `;
 
     const countQuery = `
@@ -48,14 +55,23 @@ export async function getArticles(req, res) {
     console.log("dataQuery: ", dataQuery);
 
     const result = await db.query(dataQuery);
+    const countResult = await db.query(countQuery);
+    const totalCount = parseInt(countResult.rows[0].count);
+
+    const totalPages = Math.ceil(totalCount / limit);
+    const hasPrevPage = page > 1;
+    const nextPage = parseInt(page) + 1;
+    const hasNextPage = offset + limit < totalCount;
 
     res.json({
       success: true,
       data: result.rows,
-      // page: parseInt(page),
-      // totalPages,
-      // totalCount,
-      // articles: dataResult.rows,
+      page: parseInt(page),
+      totalPages,
+      totalCount,
+      nextPage,
+      hasPrevPage,
+      hasNextPage,
     });
   } catch (err) {
     console.error("Error in getArticles:", err);

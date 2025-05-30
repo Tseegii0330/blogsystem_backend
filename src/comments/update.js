@@ -26,7 +26,7 @@ const updateComment = async (req, res) => {
   ) {
     return res.status(403).json({
       success: false,
-      message: "Permission denied. Only admin, editor or owner update comment.",
+      message: "Permission denied. Only admin, editor or update comment.",
     });
   }
 

@@ -15,6 +15,9 @@ import findById from "../src/articles/findById.js";
 import createAndDeleteLike from "../src/likes/create.js";
 import updateComment from "../src/comments/update.js";
 import deleteComment from "../src/comments/delete.js";
+import verifyEmail from "../src/user/verifyEmail.js";
+import updateUser from "../src/user/update.js";
+
 /************************************************************
  *                                                          *
  *                     API service routes                   *
@@ -25,12 +28,17 @@ import deleteComment from "../src/comments/delete.js";
 
 router.post("/login", apiLoginFunction);
 router.post("/signup", apiSignupFunction);
-router.get("/user/list", userList);
-// router.get('/api/forget-password', apiForgetPasswordFunction)
+router.get("/users/list", userList);
+router.put("/users/:id", verifyApiToken, updateUser);
+// router.get('/forget-password', apiForgetPasswordFunction)
+
+//email verify
+
+router.get("/verify-email", verifyEmail);
 
 // Article services
 router.post("/articles", verifyApiToken, createArticle);
-router.post("/articles", getArticles);
+router.get("/articles", getArticles);
 router.get("/articles/:id", findById);
 router.put("/articles/:id", verifyApiToken, updateArticle);
 router.delete("/articles/:id", verifyApiToken, deleteArticle);
@@ -48,17 +56,6 @@ router.delete(
 );
 router.get("/articles/:id/likes", likeCounts);
 router.post("/articles/:id/likes", verifyApiToken, createAndDeleteLike);
-
-// Me services
-
-/************************************************************
- *                                                          *
- *                     ADMIN service routes                 *
- *                                                          *
- *                                                          *
- ************************************************************/
-// Public services
-// router.get("/users", getUsers);
 
 router.all("/", (req, res, next) => {
   res.status(404).json({

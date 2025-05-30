@@ -3,7 +3,9 @@ const app = express();
 import dotenv from "dotenv";
 dotenv.config();
 import apiRoutes from "./routes/index.js";
+import cors from "cors";
 
+app.use(cors());
 app.use(express.json());
 app.use(express.static("static"));
 

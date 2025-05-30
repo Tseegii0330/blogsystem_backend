@@ -14,7 +14,7 @@ const register = async (req, res) => {
     throw errorHandler(400, "Email required!");
   }
   if (isNil(password) || !validateString(password, 12, 8)) {
-    throw errorHandler(400, "Password required!");
+    throw errorHandler(400, "Password required! or Password length 8 or more");
   }
   if (isNil(name) || !validateString(name, 50, 1)) {
     throw errorHandler(400, "Name required!");
@@ -28,18 +28,20 @@ const register = async (req, res) => {
 
     console.log(existingUser);
 
-    // if (!isNil(existingUser)) {
-    //   throw errorHandler(400, "Email already registred!");
-    // }
+    if (!isNil(existingUser)) {
+      throw errorHandler(400, "Email already registred!");
+    }
     const hashedPassword = await hashPassword(password, 10);
     const newUser = await db.query(
       "INSERT INTO users (name, email, password, role) VALUES ($1, $2, $3, $4) RETURNING *",
       [name, email, hashedPassword, role || "reader"]
     );
 
-    res
-      .status(201)
-      .json({ message: "Амжилттай бүртгэгдлээ", user: newUser.rows[0] });
+    res.status(201).json({
+      success: true,
+      message: "Амжилттай бүртгэгдлээ",
+      user: newUser.rows[0],
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
