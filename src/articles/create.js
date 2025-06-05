@@ -30,7 +30,7 @@ const createArticle = async (req, res) => {
     }
 
     const result = await db.query(
-      "INSERT INTO articles (title, content, tags, author_id, is_published, created_at) VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *",
+      "INSERT INTO articles (title, content, tags, user_id, is_published, created_at) VALUES ($1, $2, $3, $4, $5, NOW()) RETURNING *",
       [title, content, tags || [], user.id, is_published]
     );
 

@@ -27,9 +27,9 @@ export async function getArticles(req, res) {
           message: "Тус нэртэй нийтлэлч олдсонгүй.",
         });
       } else {
-        const author_id = authorByname.rows[0].id;
-        if (author_id) {
-          whereConditions.push(`author_id = ${author_id}`);
+        const user_id = authorByname.rows[0].id;
+        if (user_id) {
+          whereConditions.push(`user_id = ${user_id}`);
         }
       }
     }

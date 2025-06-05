@@ -6,6 +6,7 @@ const updateUser = async (req, res) => {
   const { email, is_verified = false, name, role } = req.body;
   const { id } = req.params;
   const user = req.authorizer;
+  console.log("user: ", user);
 
   let setVals = [];
 
@@ -39,10 +40,10 @@ const updateUser = async (req, res) => {
     setVals.push(`is_verified = ${is_verified}`);
   }
   if (role) {
-    setVals.push(`role = ${role}`);
+    setVals.push(`role = '${role}'`);
   }
   if (!isNil(email) && validateEmail(email)) {
-    setVals.push(`email = ${email}`);
+    setVals.push(`email = '${email}'`);
   }
 
   if (setVals.length === 0) {

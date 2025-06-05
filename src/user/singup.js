@@ -26,9 +26,7 @@ const register = async (req, res) => {
       [email]
     );
 
-    console.log(existingUser);
-
-    if (!isNil(existingUser)) {
+    if (isNil(existingUser)) {
       throw errorHandler(400, "Email already registred!");
     }
     const hashedPassword = await hashPassword(password, 10);
