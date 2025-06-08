@@ -18,6 +18,7 @@ import deleteComment from "../src/comments/delete.js";
 import verifyEmail from "../src/user/verifyEmail.js";
 import updateUser from "../src/user/update.js";
 import deleteUser from "../src/user/delete.js";
+import findByUserId from "../src/user/findById.js";
 
 /************************************************************
  *                                                          *
@@ -29,9 +30,10 @@ import deleteUser from "../src/user/delete.js";
 
 router.post("/login", apiLoginFunction);
 router.post("/signup", apiSignupFunction);
-router.get("/users/list", userList);
+router.get("/users/list", verifyApiToken, userList);
 router.put("/users/:id", verifyApiToken, updateUser);
 router.delete("/users/:id", verifyApiToken, deleteUser);
+router.get("/users/:id", verifyApiToken, findByUserId);
 
 // router.get('/forget-password', apiForgetPasswordFunction)
 
