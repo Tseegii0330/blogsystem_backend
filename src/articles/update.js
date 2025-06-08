@@ -21,10 +21,6 @@ const updateArticle = async (req, res) => {
       });
     }
     const article = await db.query(`SELECT * FROM articles WHERE id = ${id}`);
-    const pushedTagLength =
-      article.rows[0].tags.length == 0
-        ? article.rows[0].tags.length
-        : article.rows[0].tags.length + 1;
 
     if (!article) {
       return res.status(400).json({ error: "Not fount article." });
@@ -36,8 +32,9 @@ const updateArticle = async (req, res) => {
     if (title) {
       setVals.push(`title = '${title}'`);
     }
-    if (tags) {
-      setVals.push(`tags[${pushedTagLength}] = '${tags}'`);
+    if (tags && Array.isArray(tags)) {
+      const tagArray = tags.map((t) => `'${t}'`).join(", ");
+      setVals.push(`tags = ARRAY[${tagArray}]`);
     }
     if (is_published) {
       setVals.push(`is_published = ${is_published}`);

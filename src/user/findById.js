@@ -1,4 +1,5 @@
 import db from "../../db.js";
+import { isNil } from "../../utils/validations.js";
 
 const findByUserId = async (req, res) => {
   const id = req.params.id;
