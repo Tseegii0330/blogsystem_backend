@@ -27,7 +27,7 @@ const findByUserId = async (req, res) => {
 
     res.status(201).json({
       success: true,
-      article: user.rows[0],
+      user: user.rows[0],
     });
   } catch (err) {
     res.status(500).json({ success: false, error: err.message });
